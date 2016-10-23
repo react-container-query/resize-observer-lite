@@ -1,2 +1,3 @@
 # resize-observer-lite
-A ResizeObserver polyfill that only works for elements that can contain child elements.
+
+A ResizeObserver polyfill that has limited functionality of ResizeObserver.

@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "enableAutoDiscovery": false,
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "lib",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noResolve": true,
+    "outDir": "lib",
+    "pretty": true,
+    "sourceMap": true,
+    "target": "es5",
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true
+  },
+  "include": [
+    "typings-custom/*.d.ts",
+    "src/*.ts"
+  ]
+}
