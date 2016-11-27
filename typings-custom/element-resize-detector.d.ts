@@ -9,12 +9,12 @@ declare module 'element-resize-detector' {
     }
 
     interface ElementResizeDetectorInstance {
-      listenTo(element: HTMLElement, handler: ElementResizeDetectorEventHandler): void;
-      uninstall(element: HTMLElement): void;
+      listenTo(element: Element, handler: ElementResizeDetectorEventHandler): void;
+      uninstall(element: Element): void;
     }
 
     interface ElementResizeDetectorEventHandler {
-      (element: HTMLElement): void;
+      (element: Element): void;
     }
   }
 

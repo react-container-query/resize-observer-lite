@@ -3,44 +3,50 @@ import elementResizeDetectorMaker = require('element-resize-detector');
 export default class ResizeObserverLite {
   private hasResizeObserver: boolean;
   private erd?: elementResizeDetectorMaker.ElementResizeDetectorInstance;
-  private listenedElements: HTMLElement[] = [];
+  private listenedElement: Element | null = null;
   private rz?: ResizeObserver;
 
   constructor(private handler: ResizeObserverLiteEntriesHandler) {
     this.hasResizeObserver = typeof (<any> window).ResizeObserver !== 'undefined';
-    if (!this.hasResizeObserver) {
-      this.erd = elementResizeDetectorMaker({strategy: 'scroll'});
-    } else {
+    if (this.hasResizeObserver) {
       this.rz = new ResizeObserver((entries) => {
         this.handler(getSize(entries[0].target));
       });
+    } else {
+      this.erd = elementResizeDetectorMaker({strategy: 'scroll'});
     }
   }
 
-  observe(element: HTMLElement) {
-    if (!this.hasResizeObserver) {
-      this.erd!.listenTo(element, (element) => {
-        this.handler(getSize(element));
-      });
-      this.listenedElements.push(element);
-    } else {
-      this.rz!.observe(element);
+  observe(element: Element) {
+    if (this.listenedElement !== element) {
+      if (this.listenedElement) {
+        this.disconnect();
+      }
+
+      if (this.hasResizeObserver) {
+        this.rz!.observe(element);
+      } else {
+        this.erd!.listenTo(element, (element) => {
+          this.handler(getSize(element));
+        });
+      }
+
+      this.listenedElement = element;
     }
   }
 
   disconnect() {
-    if (!this.hasResizeObserver) {
-      for (const element of this.listenedElements) {
-        this.erd!.uninstall(element);
-      }
-      this.listenedElements = [];
-    } else {
+    if (this.hasResizeObserver) {
       this.rz!.disconnect();
+    } else {
+      this.erd!.uninstall(this.listenedElement!);
     }
+
+    this.listenedElement = null;
   }
 }
 
-function getSize(element: HTMLElement): ResizeObserverSize {
+function getSize(element: Element): ResizeObserverSize {
   return {
     width: getNumber(window.getComputedStyle(element)['width']!),
     height: getNumber(window.getComputedStyle(element)['height']!)
@@ -63,7 +69,7 @@ export interface ResizeObserverSize {
 
 declare class ResizeObserver {
   constructor(handler: ResizeObserverEntriesHandler);
-  observe(element: HTMLElement): void;
+  observe(element: Element): void;
   disconnect(): void;
 }
 
@@ -80,5 +86,5 @@ interface ResizeObserverEntry {
     top: number;
     width: number;
   };
-  target: HTMLElement;
+  target: Element;
 }
