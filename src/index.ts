@@ -23,12 +23,14 @@ export default class ResizeObserverLite {
         this.disconnect();
       }
 
-      if (this.hasResizeObserver) {
-        this.rz!.observe(element);
-      } else {
-        this.erd!.listenTo(element, (element) => {
-          this.handler(getSize(element));
-        });
+      if (element) {
+        if (this.hasResizeObserver) {
+          this.rz!.observe(element);
+        } else {
+          this.erd!.listenTo(element, (element) => {
+            this.handler(getSize(element));
+          });
+        }
       }
 
       this.listenedElement = element;
@@ -36,13 +38,15 @@ export default class ResizeObserverLite {
   }
 
   disconnect() {
-    if (this.hasResizeObserver) {
-      this.rz!.disconnect();
-    } else {
-      this.erd!.uninstall(this.listenedElement!);
-    }
+    if (this.listenedElement) {
+      if (this.hasResizeObserver) {
+        this.rz!.disconnect();
+      } else {
+        this.erd!.uninstall(this.listenedElement!);
+      }
 
-    this.listenedElement = null;
+      this.listenedElement = null;
+    }
   }
 }
 
