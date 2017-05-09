@@ -1,6 +1,6 @@
 {
   "name": "resize-observer-lite",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A ResizeObserver polyfill that has limited functionality of ResizeObserver.",
   "repository": {
     "type": "git",
