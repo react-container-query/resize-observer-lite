@@ -51,9 +51,13 @@ export default class ResizeObserverLite {
 }
 
 function getSize(element: Element): ResizeObserverSize {
+  const computedStyle = window.getComputedStyle(element) || {
+    width: 0,
+    height: 0
+  };
   return {
-    width: getNumber(window.getComputedStyle(element)['width']!),
-    height: getNumber(window.getComputedStyle(element)['height']!)
+    width: getNumber(computedStyle['width']!),
+    height: getNumber(computedStyle['height']!)
   };
 }
 
